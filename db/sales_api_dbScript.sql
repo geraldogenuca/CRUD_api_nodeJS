@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2024-12-20 18:03
+-- Generated: 2024-12-20 18:56
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -12,27 +12,36 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 ALTER SCHEMA `sales_api`  DEFAULT COLLATE utf8_unicode_ci ;
 
 ALTER TABLE `sales_api`.`images` 
-DROP FOREIGN KEY `fk_images_products1`;
+DROP FOREIGN KEY `fk_images_categories1`;
+
+ALTER TABLE `sales_api`.`products` 
+DROP FOREIGN KEY `fk_products_categories`;
 
 ALTER TABLE `sales_api`.`images` 
 COLLATE = utf8_unicode_ci ,
-DROP COLUMN `id_products`,
-ADD COLUMN `id_category` INT(11) NOT NULL AFTER `id_images`,
-CHANGE COLUMN `image_path` `image_path` VARCHAR(45) NOT NULL ,
-ADD INDEX `fk_images_categories1_idx` (`id_category` ASC) VISIBLE,
-DROP INDEX `fk_images_products1_idx` ;
-;
+CHANGE COLUMN `id_images` `id_image` INT(11) NOT NULL AUTO_INCREMENT ,
+CHANGE COLUMN `image_path` `image_path` VARCHAR(45) NOT NULL ;
 
-CREATE TABLE IF NOT EXISTS `sales_api`.`categories` (
-  `id_category` INT(11) NOT NULL AUTO_INCREMENT,
-  `name_category` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id_category`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
+ALTER TABLE `sales_api`.`products` 
+COLLATE = utf8_unicode_ci ,
+CHANGE COLUMN `id_products` `id_product` INT(11) NOT NULL AUTO_INCREMENT ,
+CHANGE COLUMN `name_products` `name_product` VARCHAR(150) NOT NULL ,
+CHANGE COLUMN `price_products` `price_product` DOUBLE NOT NULL ,
+CHANGE COLUMN `description_products` `description_product` VARCHAR(255) NULL DEFAULT NULL ;
+
+ALTER TABLE `sales_api`.`categories` 
+COLLATE = utf8_unicode_ci ,
+CHANGE COLUMN `name_category` `name_category` VARCHAR(100) NOT NULL ;
 
 ALTER TABLE `sales_api`.`images` 
 ADD CONSTRAINT `fk_images_categories1`
+  FOREIGN KEY (`id_category`)
+  REFERENCES `sales_api`.`categories` (`id_category`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `sales_api`.`products` 
+ADD CONSTRAINT `fk_products_categories`
   FOREIGN KEY (`id_category`)
   REFERENCES `sales_api`.`categories` (`id_category`)
   ON DELETE NO ACTION

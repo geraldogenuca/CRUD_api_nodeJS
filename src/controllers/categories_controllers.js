@@ -12,7 +12,7 @@ module.exports = {
                 message: 'Category inserted successfully!',
                 created_category: {
                     id_category: result.insertId,
-                    category_name: req.body.name_category,
+                    name_category: req.body.name_category,
                     request: {
                         type: 'POST',
                         description: 'Insert category!',
@@ -38,7 +38,7 @@ module.exports = {
                     categories: result.map(cat => {
                         return {
                             id_category: cat.id_category,
-                            category_name: cat.name_category,
+                            name_category: cat.name_category,
                             request: {
                                 type: 'GET',
                                 description: 'Insert category!',

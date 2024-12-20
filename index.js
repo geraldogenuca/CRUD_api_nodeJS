@@ -6,7 +6,8 @@ const express = require('express')
 , morgan = require('morgan')
 
 //
-, categoryRoutes = require('./src/routes/category.routes')
+, categoriesRoutes = require('./src/routes/categories.routes')
+, productsRoutes = require('./src/routes/products.routes')
 
 
 app.use('/public', express.static('public'))
@@ -15,8 +16,9 @@ app.use(morgan('dev'))
 
 
 //
-app.use('/categories', categoryRoutes)
-app.use('/test', (req, res) => {res.send({message: 'Deu certo!!!'})})
+app.use('/categories', categoriesRoutes)
+app.use('/products', productsRoutes)
+
 
 app.listen(port, () => {
     console.log(`Server is running in PORT:${port}!`)
