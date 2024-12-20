@@ -1,0 +1,40 @@
+{
+  "name": "crud_api_nodejs",
+  "version": "1.0.0",
+  "description": "CRUP api REST in nodejs and mysql.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geraldogenuca/CRUD_api_nodeJS.git"
+  },
+  "keywords": [
+    "crud",
+    "rest",
+    "api",
+    "nodejs",
+    "mysql",
+    "express"
+  ],
+  "author": "gegsdeveloper",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/geraldogenuca/CRUD_api_nodeJS/issues"
+  },
+  "homepage": "https://github.com/geraldogenuca/CRUD_api_nodeJS#readme",
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.11.5"
+  }
+}
