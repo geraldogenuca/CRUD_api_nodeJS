@@ -5,6 +5,8 @@ const express = require('express')
 , app = express()
 , morgan = require('morgan')
 
+//
+, categoryRoutes = require('./src/routes/category.routes')
 
 
 app.use('/public', express.static('public'))
@@ -12,6 +14,8 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 
+//
+app.use('/categories', categoryRoutes)
 app.use('/test', (req, res) => {res.send({message: 'Deu certo!!!'})})
 
 app.listen(port, () => {
