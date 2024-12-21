@@ -14,7 +14,7 @@ module.exports = {
                 created_image: {
                     id_image: result.insertId,
                     id_product: req.body.id_product,
-                    image_path: req.file.path,
+                    image_path: `${req.file.path}`.replace('\\', '/').replace('\\', '/'),
                     request: {
                         type: 'POST',
                         description: 'Insert image!',
@@ -43,7 +43,7 @@ module.exports = {
                         return {
                             id_image: img.id_image,
                             id_product: img.id_product,
-                            image_path: img.image_path,
+                            image_path: `${req.file.path}`.replace('\\', '/').replace('\\', '/'),
                             request: {
                                 type: 'GET',
                                 description: 'List of images per product!',
