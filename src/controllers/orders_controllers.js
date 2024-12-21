@@ -47,7 +47,7 @@ module.exports = {
                     orders: result.map(ord => {
                         return {
                             id_order: ord.id_order,
-                            id_product: ord.id_product,
+                            
                             quantity_order: ord.quantity_order,
                             request: {
                                 type: 'GET',
