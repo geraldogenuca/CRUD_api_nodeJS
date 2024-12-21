@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2024-12-20 18:56
+-- Generated: 2024-12-21 06:48
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -19,24 +19,41 @@ DROP FOREIGN KEY `fk_products_categories`;
 
 ALTER TABLE `sales_api`.`images` 
 COLLATE = utf8_unicode_ci ,
-CHANGE COLUMN `id_images` `id_image` INT(11) NOT NULL AUTO_INCREMENT ,
-CHANGE COLUMN `image_path` `image_path` VARCHAR(45) NOT NULL ;
+DROP COLUMN `id_category`,
+ADD COLUMN `id_product` INT(11) NOT NULL AFTER `id_image`,
+CHANGE COLUMN `image_path` `image_path` VARCHAR(500) NOT NULL ,
+ADD INDEX `fk_images_products1_idx` (`id_product` ASC) VISIBLE,
+DROP INDEX `fk_images_categories1_idx` ;
+;
 
 ALTER TABLE `sales_api`.`products` 
 COLLATE = utf8_unicode_ci ,
-CHANGE COLUMN `id_products` `id_product` INT(11) NOT NULL AUTO_INCREMENT ,
-CHANGE COLUMN `name_products` `name_product` VARCHAR(150) NOT NULL ,
-CHANGE COLUMN `price_products` `price_product` DOUBLE NOT NULL ,
-CHANGE COLUMN `description_products` `description_product` VARCHAR(255) NULL DEFAULT NULL ;
+CHANGE COLUMN `name_product` `name_product` VARCHAR(150) NOT NULL ,
+CHANGE COLUMN `description_product` `description_product` VARCHAR(255) NULL DEFAULT NULL ;
 
 ALTER TABLE `sales_api`.`categories` 
 COLLATE = utf8_unicode_ci ,
 CHANGE COLUMN `name_category` `name_category` VARCHAR(100) NOT NULL ;
 
+CREATE TABLE IF NOT EXISTS `sales_api`.`orders` (
+  `id_order` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_product` INT(11) NOT NULL,
+  `quantity_order` SMALLINT(6) NOT NULL,
+  PRIMARY KEY (`id_order`),
+  INDEX `fk_orders_products1_idx` (`id_product` ASC) VISIBLE,
+  CONSTRAINT `fk_orders_products1`
+    FOREIGN KEY (`id_product`)
+    REFERENCES `sales_api`.`products` (`id_product`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
 ALTER TABLE `sales_api`.`images` 
-ADD CONSTRAINT `fk_images_categories1`
-  FOREIGN KEY (`id_category`)
-  REFERENCES `sales_api`.`categories` (`id_category`)
+ADD CONSTRAINT `fk_images_products1`
+  FOREIGN KEY (`id_product`)
+  REFERENCES `sales_api`.`products` (`id_product`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 

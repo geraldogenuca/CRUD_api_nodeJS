@@ -74,7 +74,7 @@ module.exports = {
         try {
             const query = `SELECT * FROM products WHERE id_product = ?;`
 
-            const result = await client.execute(query, [req.body.id_product || req.params.id_product])
+            const result = await client.execute(query, [req.params.id_product])
 
             const response = {
                 message: 'Details of product!',
@@ -116,7 +116,7 @@ module.exports = {
             const response = {
                 message: 'Product updated successfully!',
                 updated_product: {
-                    id_product: req.params.insertId,
+                    id_product: req.body.id_product,
                     id_category: req.body.id_category,
                     name_category: req.body.name_product,
                     price_category: req.body.price_product,

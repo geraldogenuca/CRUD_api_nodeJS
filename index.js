@@ -8,6 +8,7 @@ const express = require('express')
 //
 , categoriesRoutes = require('./src/routes/categories.routes')
 , productsRoutes = require('./src/routes/products.routes')
+, ordersRoutes = require('./src/routes/orders.routes')
 
 
 app.use('/public', express.static('public'))
@@ -18,6 +19,7 @@ app.use(morgan('dev'))
 //
 app.use('/categories', categoriesRoutes)
 app.use('/products', productsRoutes)
+app.use('/orders', ordersRoutes)
 
 
 app.listen(port, () => {
