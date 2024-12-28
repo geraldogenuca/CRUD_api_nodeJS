@@ -22,9 +22,9 @@ module.exports = {
                 created_product: {
                     id_product: result.insertId,
                     id_category: req.body.id_category,
-                    name_category: req.body.name_product,
-                    price_category: req.body.price_product,
-                    description_category: req.body.description_product,
+                    name_product: req.body.name_product,
+                    price_product: req.body.price_product,
+                    description_product: req.body.description_product,
                     request: {
                         type: 'POST',
                         description: 'Insert product!',
@@ -52,7 +52,7 @@ module.exports = {
                             id_product: prod.id_product,
                             id_category: prod.id_category,
                             name_product: prod.name_product,
-                            price_name: prod.price_name,
+                            price_pruduct: prod.price_name,
                             description_product: prod.description,
                             request: {
                                 type: 'GET',

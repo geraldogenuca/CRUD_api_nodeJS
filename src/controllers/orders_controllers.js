@@ -41,7 +41,18 @@ module.exports = {
     
     async index(req, res) {
         try {
-            const result = await client.execute(`SELECT * FROM orders;`)
+            const result = await client.execute(`
+                SELECT 
+                        orders.id_order, orders.id_user, users.name_user, orders.id_costumer,
+                        costumers.name_costumer, products.name_product, orders.quantity_product
+                  FROM  orders
+            INNER JOIN  users
+                    ON  users.id_user = orders.id_user
+            INNER JOIN  costumers
+                    ON  costumers.id_costumer = orders.id_order
+            INNER JOIN  products
+                    ON  products.id_product = orders.id_product;
+            `)
 
             const response = {
                 message: 'List of all orders!',
@@ -49,10 +60,20 @@ module.exports = {
                     orders_quantity: result.length,
                     orders: result.map(ord => {
                         return {
-                            id_order: ord.id_order,
-                            id_user: ord.id_user,
-                            id_costumer: ord.id_costumer,
-                            quantity_order: ord.quantity_order,
+                            
+                            Sales_order_number: ord.id_order,
+                            seller:{
+                                id_user: ord.id_user,
+                                name_user: ord.name_user
+                            },
+                            costumer: {
+                                id_costumer: ord.id_costumer,
+                                name_costumer: ord.name_costumer
+                            },
+                            product: {
+                                quantity_product: ord.quantity_product,
+                                name_product: ord.name_product
+                            },
                             request: {
                                 type: 'GET',
                                 description: 'Insert order!',
@@ -71,18 +92,38 @@ module.exports = {
     
     async detailsOne(req, res) {
         try {
-            const query = `SELECT * FROM orders WHERE id_order = ?;`
+            const query = `
+                SELECT 
+                        orders.id_order, orders.id_user, users.name_user, orders.id_costumer,
+                        costumers.name_costumer, products.name_product, orders.quantity_product
+                  FROM  orders
+            INNER JOIN  users
+                    ON  users.id_user = orders.id_user
+            INNER JOIN  costumers
+                    ON  costumers.id_costumer = orders.id_order
+            INNER JOIN  products
+                    ON  products.id_product = orders.id_product
+                 WHERE  orders.id_order = 2;
+            `
 
             const result = await client.execute(query, [req.params.id_order])
 
             const response = {
                 message: `Details order id: ${result[0].id_order}, of product!`,
                 order: {
-                    id_order: result[0].id_order,
-                    id_user: result[0].id_user,
-                    id_costumer: result[0].id_costumer,
-                    id_product: result[0].id_product,
-                    quantity_product: result[0].quantity_product,
+                    Sales_order_number: result[0].id_order,
+                    seller:{
+                        id_user: result[0].id_user,
+                        name_user: result[0].name_user,
+                    },
+                    costumer: {
+                        id_costumer: result[0].id_costumer,
+                        name_costumer: result[0].name_costumer,
+                    },
+                    product: {
+                        quantity_product: result[0].quantity_product,
+                        name_product: result[0].name_product,
+                    },
                     request: {
                         type: 'GET',
                         description: 'Return details of order!',
