@@ -59,7 +59,6 @@ module.exports = {
                 const token = jwt.sign({
                     id_user: results[0].id_user,
                     email_user: results[0].email_user,
-                    cpf_user: results[0].cpf_user,
                 },
                 process.env.KEY_JWT,
                 {

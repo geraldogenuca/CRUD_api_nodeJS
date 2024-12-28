@@ -23,7 +23,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "Category not created!"})
         }
     },
     
@@ -49,21 +49,46 @@ module.exports = {
                 }
             }
     
-            return res.status(201).json(response)
+            return res.status(200).json(response)
         } catch (error) {
             return res.status(500).json({error: error})
         }
     },
     
+    async detailsOne(req, res) {
+        try {
+            const query = `SELECT * FROM categories WHERE id_category = ?;`
+
+            const result = await client.execute(query, [req.params.id_category])
+
+            const response = {
+                message: `Details of category id: ${req.params.id_category}!`,
+                costumer: {
+                    id_category: result[0].id_category,
+                    name_category: result[0].name_category,
+                    request: {
+                        type: 'GET',
+                        description: 'Return details of costumer!',
+                        url: process.env.URL_CAT + result[0].id_category
+                    }
+                }
+            }
+    
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(500).json({error: "Category not found!"})
+        }
+    },    
+    
     async delete(req, res) {
         try {
             const query = `DELETE FROM categories WHERE id_category = ?;`
 
-            const result = await client.execute(query, [req.body.id_category])
+            await client.execute(query, [req.body.id_category])
 
             const response = {
                 message: 'Category deleted successfully!',
-                created_category: {
+                deleted_category: {
                     id_category: req.body.id_category,
                     request: {
                         type: 'DELETE',
@@ -75,7 +100,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "Category not deleted or does not exist!"})
         }
     }
 }

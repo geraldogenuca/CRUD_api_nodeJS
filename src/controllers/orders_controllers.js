@@ -7,12 +7,13 @@ module.exports = {
             const query = `
                     INSERT INTO 
                         orders 
-                            (id_product, quantity_order) 
+                            (id_costumer, id_user, id_product, quantity_order) 
                         VALUES
-                            (?, ?);
+                            (?, ?, ?, ?);
             `
 
             const result = await client.execute(query, [
+                req.body.id_user, req.body.id_costumer,
                 req.body.id_product, req.body.quantity_order,
               ])
 
@@ -20,7 +21,9 @@ module.exports = {
                 message: 'Order inserted successfully!',
                 created_order: {
                     id_order: result.insertId,
-                     id_product: req.body.id_product,
+                    id_user: req.body.id_user,
+                    id_costumer: req.body.id_costumer,
+                    id_product: req.body.id_product,
                     quantity_order: req.body.quantity_order,
                     request: {
                         type: 'POST',
@@ -47,7 +50,8 @@ module.exports = {
                     orders: result.map(ord => {
                         return {
                             id_order: ord.id_order,
-                            
+                            id_user: ord.id_user,
+                            id_costumer: ord.id_costumer,
                             quantity_order: ord.quantity_order,
                             request: {
                                 type: 'GET',
@@ -75,6 +79,8 @@ module.exports = {
                 message: 'Details of order!',
                 product: {
                     id_order: result[0].id_order,
+                    id_user: result[0].id_user,
+                    id_costumer: req[0].id_costumer,
                     id_product: result[0].id_product,
                     quantity_order: result[0].quantity_order,
                     request: {
@@ -96,12 +102,13 @@ module.exports = {
             const query = `
                     UPDATE orders 
                        SET
-                        id_product = ?, quantity_order = ?
+                        id_product = ?, id_user = ?, 
+                        id_costumer = ?, quantity_order = ?
                      WHERE id_order = ?; 
             `
 
             await client.execute(query, [
-                req.body.id_product,
+                req.body.id_product, req.body.id_user, req.body.id_costumer,
                 req.body.quantity_order, req.body.id_order
             ])
 
@@ -109,6 +116,8 @@ module.exports = {
                 message: 'Order updated successfully!',
                 updated_order: {
                     id_order: req.body.id_order,
+                    id_user: req.body.id_user,
+                    id_costumer: req.body.id_costumer,
                     id_product: req.body.id_product,
                     quantity_order: req.body.quantity_order,
                     request: {

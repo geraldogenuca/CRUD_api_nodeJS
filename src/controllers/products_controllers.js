@@ -35,7 +35,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "Product not created!"})
         }
     },
     
@@ -94,16 +94,14 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "Product not exist!"})
         }
     },
 
     async update(req, res) {
         try {
             const query = `
-                    UPDATE products 
-                       SET
-                        id_category = ?, name_product = ?, price_product =?, description_product = ?
+                    UPDATE products SET id_category = ?, name_product = ?, price_product =?, description_product = ?
                      WHERE id_product = ?
             `
 
@@ -131,7 +129,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "Product not exist!"})
         }
     },
     
@@ -143,7 +141,7 @@ module.exports = {
 
             const response = {
                 message: 'Product deleted successfully!',
-                created_product: {
+                deleted_product: {
                     id_product: req.body.id_product,
                     request: {
                         type: 'DELETE',
@@ -153,9 +151,9 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response)
+            return res.status(200).json(response) 
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "Product not created or does not exist!"})
         }
     }
 }

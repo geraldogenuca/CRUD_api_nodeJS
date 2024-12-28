@@ -11,6 +11,7 @@ const express = require('express')
 , ordersRoutes = require('./src/routes/orders.routes')
 , imagesRoutes = require('./src/routes/images.routes')
 , usersRoutes = require('./src/routes/users.routes')
+, costumersRoutes = require('./src/routes/costumers.routes')
 
 
 app.use('/public', express.static('public'))
@@ -24,6 +25,7 @@ app.use('/products', productsRoutes)
 app.use('/orders', ordersRoutes)
 app.use('/images', imagesRoutes)
 app.use('/users', usersRoutes)
+app.use('/costumers', costumersRoutes)
 
 
 app.listen(port, () => {

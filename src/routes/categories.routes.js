@@ -5,9 +5,10 @@ const login = require('../middleware/login')
 , categoriesControllers = require('../controllers/categories_controllers')
 
 
-router.post('/create', login.required,categoriesControllers.create)
+router.post('/create', categoriesControllers.create)
 router.get('/', categoriesControllers.index)
-router.delete('/delete', login.required, categoriesControllers.delete)
+router.get('/:id_category', categoriesControllers.detailsOne)
+router.delete('/delete', categoriesControllers.delete)
 
 
 

@@ -28,8 +28,63 @@ module.exports = {
             return res.status(500).json({error: error})
         }
     },
+    
+    async index(req, res) {
+        try {
+            const result = await client.execute(`SELECT * FROM images;`)
 
-    async detailsForProducts(req, res) {
+            const response = {
+                message: 'List of all images!',
+                list_images: {
+                    images_quantity: result.length,
+                    images: result.map(img => {
+                        return {
+                            id_image: img.id_image,
+                            id_product: img.id_product,
+                            image_path: img.image_path,
+                            request: {
+                                type: 'GET',
+                                description: 'Return lis all images products!',
+                                url: process.env.URL_SERVER + `${img.image_path}`.replace('\\', '/').replace('\\', '/')
+                            }
+                        }                        
+                    })
+                }
+            }
+    
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(500).json({error: error})
+        }
+    },
+
+    async detailsOne(req, res) {
+        try {
+            const query = `SELECT * FROM images WHERE id_image = ?;`
+
+            const result = await client.execute(query, [req.params.id_image])
+
+            const response = {
+                message: `Details of image id: ${req.params.id_image}!`,
+                image: {
+                    id_image: result[0].id_image,
+                    id_product: result[0].id_product,
+                    image_path: process.env.URL_SERVER + `${result[0].image_path}`.replace('\\', '/').replace('\\', '/'),
+                    request: {
+                        type: 'GET',
+                        description: 'Return details of image!',
+                        url: process.env.URL_SERVER + `${result[0].image_path}`.replace('\\', '/').replace('\\', '/')
+                    }
+                }
+            }
+    
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(500).json({error: error})
+        }
+    },
+
+    /*async detailsForProducts(req, res) {
         try {
             const query = `SELECT * FROM images WHERE id_product = ?;`
 
@@ -47,7 +102,7 @@ module.exports = {
                             request: {
                                 type: 'GET',
                                 description: 'List of images per product!',
-                                url: process.env.URL_SERVER + `${img.image_path}`.replace('\\', '/').replace('\\', '/')
+                                url: process.env.URL_IMG + `${img.image_path}`.replace('\\', '/').replace('\\', '/')
                             }
                         }
                     })
@@ -58,7 +113,7 @@ module.exports = {
         } catch (error) {
             return res.status(500).json({error: error})
         }
-    },
+    },*/
     
     async delete(req, res) {
         try {
@@ -73,7 +128,7 @@ module.exports = {
                     request: {
                         type: 'DELETE',
                         description: 'Delete image!',
-                        deleted_url: process.env.URL_CAT + req.body.id_image
+                        deleted_url: process.env.URL_IMG + req.body.id_image
                     }
                 }
             }
