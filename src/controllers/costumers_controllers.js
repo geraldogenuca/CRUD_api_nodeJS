@@ -36,7 +36,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "Costumer not created!"})
         }
     },
 
@@ -68,7 +68,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: 'Costumers not found!'})
         }
     },
 
@@ -96,9 +96,45 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: 'Costumer not found!'})
         }
     },    
+
+    async update(req, res) {
+        try {
+            const query = `
+                     UPDATE costumers 
+                        SET name_costumer = ?, email_costumer = ?, 
+                            cpf_costumer = ?, phone_costumer = ? 
+                      WHERE id_costumer = ?
+            `
+
+            await client.execute(query, [
+                req.body.name_costumer, req.body.email_costumer, req.body.cpf_costumer, 
+                req.body.phone_costumer, req.body.id_costumer
+            ])
+
+            const response = {
+                message: `Costumer id: ${req.body.id_costumer} updated successfully!`,
+                updated_costumer: {
+                    id_costumer: req.body.id_costumer,
+                    name_costumer: req.body.name_costumer,
+                    email_costumer: req.body.email_costumer,
+                    cpf_costumer: req.body.cpf_costumer,
+                    phone_costumer: req.body.phone_costumer,
+                    request: {
+                        type: 'PATCH',
+                        description: 'Update costumer!',
+                        url: process.env.URL_COST + req.body.id_costumer
+                    }
+                }
+            }
+    
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(500).json({error: "Costumer not created or incorrect data!"})
+        }
+    },
     
     async delete(req, res) {
         try {
@@ -120,7 +156,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "Costumer not found!"})
         }
     }
 }

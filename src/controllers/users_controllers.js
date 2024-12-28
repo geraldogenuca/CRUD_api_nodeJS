@@ -41,7 +41,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "User not created!"})
         }
     },
 
@@ -101,7 +101,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: 'Products not exist!'})
         }
     },
 
@@ -112,7 +112,7 @@ module.exports = {
             const result = await client.execute(query, [req.params.id_user])
 
             const response = {
-                message: 'Details of user!',
+                message: `Details of user id: ${result[0].id_user}!`,
                 user: {
                     id_user: result[0].id_user,
                     name_user: result[0].name_user,
@@ -128,10 +128,44 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: 'Product not exist!'})
         }
     },    
     
+    async update(req, res) {
+        try {
+            const query = `
+                     UPDATE users 
+                        SET name_user = ?, email_user = ?, cpf_user = ? 
+                      WHERE id_user = ?
+            `
+
+            await client.execute(query, [
+                req.body.name_user, req.body.email_user, 
+                req.body.cpf_user, req.body.id_user
+            ])
+
+            const response = {
+                message: `User id: ${req.body.id_user} updated successfully!`,
+                updated_product: {
+                    id_user: req.body.id_user,
+                    name_user: req.body.name_user,
+                    email_user: req.body.email_user,
+                    cpf_user: req.body.cpf_user,
+                    request: {
+                        type: 'PATCH',
+                        description: 'Update user!',
+                        url: process.env.URL_USER + req.body.id_user
+                    }
+                }
+            }
+    
+            return res.status(200).json(response)
+        } catch (error) {
+            return res.status(500).json({error: "User not created or incorrect data!"})
+        }
+    },
+
     async delete(req, res) {
         try {
             const query = `DELETE FROM users WHERE id_user = ?;`
@@ -152,7 +186,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: error})
+            return res.status(500).json({error: "User not exist!"})
         }
     }
 }

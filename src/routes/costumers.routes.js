@@ -5,10 +5,11 @@ const login = require('../middleware/login')
 , costumersControllers = require('../controllers/costumers_controllers')
 
 
-router.post('/create', costumersControllers.create)
+router.post('/create', login.required, costumersControllers.create)
 router.get('/', costumersControllers.index)
 router.get('/:id_costumer', costumersControllers.detailsOne)
-router.delete('/delete', costumersControllers.delete)
+router.patch('/:id_costumer', login.required, costumersControllers.update)
+router.delete('/delete', login.required, costumersControllers.delete)
 
 
 
