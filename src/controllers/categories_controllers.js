@@ -4,6 +4,15 @@ const client = require('../config/mysql')
 module.exports = {    
     async create(req, res) {
         try {
+            const query_very = `SELECT name_category FROM categories WHERE name_category = ?;`
+
+            const result_very = await client.execute(query_very, [req.body.name_category])
+
+            if(result_very.length > 0){
+
+                return res.status(500).json({error: 'Category exist!'})
+            }      
+            
             const query = `INSERT INTO categories (name_category) VALUE (?);`
 
             const result = await client.execute(query, [req.body.name_category])
@@ -16,16 +25,16 @@ module.exports = {
                     request: {
                         type: 'POST',
                         description: 'Insert category!',
-                        url: process.env.URL_CAT + result.insertId
+                        url: process.env.URL_EMPLOY + result.insertId
                     }
                 }
             }
-    
+
             return res.status(201).json(response)
         } catch (error) {
             return res.status(500).json({error: "Category not created!"})
         }
-    },
+    },    
     
     async index(req, res) {
         try {
@@ -82,6 +91,14 @@ module.exports = {
     
     async delete(req, res) {
         try {
+            const query_very = `SELECT * FROM categories WHERE id_category = ?`
+            
+            const result_very = await client.execute(query_very, [req.body.id_category]) 
+
+            if(result_very.length < 1) {
+                return res.status(500).json({message: 'Category not deleted or does not exist!'})
+            }
+
             const query = `DELETE FROM categories WHERE id_category = ?;`
 
             await client.execute(query, [req.body.id_category])
@@ -100,7 +117,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: "Category not deleted or does not exist!"})
+            return res.status(500).json({error: error})
         }
     }
 }

@@ -10,7 +10,7 @@ const express = require('express')
 , productsRoutes = require('./src/routes/products.routes')
 , ordersRoutes = require('./src/routes/orders.routes')
 , imagesRoutes = require('./src/routes/images.routes')
-, usersRoutes = require('./src/routes/users.routes')
+, employeesRoutes = require('./src/routes/employees.routes')
 , costumersRoutes = require('./src/routes/costumers.routes')
 
 
@@ -24,7 +24,7 @@ app.use('/categories', categoriesRoutes)
 app.use('/products', productsRoutes)
 app.use('/orders', ordersRoutes)
 app.use('/images', imagesRoutes)
-app.use('/users', usersRoutes)
+app.use('/employees', employeesRoutes)
 app.use('/costumers', costumersRoutes)
 
 

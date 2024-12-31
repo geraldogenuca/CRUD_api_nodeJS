@@ -12,4 +12,4 @@ router.delete('/delete', login.required, categoriesControllers.delete)
 
 
 
-module.exports = router
+module.exports = router 
