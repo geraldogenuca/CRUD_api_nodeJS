@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 module.exports = {    
-    async create(req, res) {
+    async create(req, res) { 
         try {
             const query_very = `SELECT * FROM employees WHERE cpf_employee = ?`
 
@@ -151,8 +151,7 @@ module.exports = {
     },    
     
     async update(req, res) {
-        try {
-            
+        try {            
             const query_very = `SELECT * FROM employees WHERE id_employee = ?`
 
             const result_very = await client.execute(query_very, [req.body.id_employee]) 
