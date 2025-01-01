@@ -7,13 +7,13 @@ module.exports = {
             const query = `
                     INSERT INTO 
                         orders 
-                            (id_costumer, id_user, id_product, quantity_product) 
+                            (id_costumer, id_product, id_employee, quantity_product) 
                         VALUES
                             (?, ?, ?, ?);
             `
 
             const result = await client.execute(query, [
-                req.body.id_costumer, req.body.id_user,
+                req.body.id_costumer, req.body.id_employee,
                 req.body.id_product, req.body.quantity_product,
               ])
 
@@ -41,18 +41,23 @@ module.exports = {
     
     async index(req, res) {
         try {
-            const result = await client.execute(`
+            const query = `
                 SELECT 
-                        orders.id_order, orders.id_user, users.name_user, orders.id_costumer,
-                        costumers.name_costumer, products.name_product, orders.quantity_product
+                        orders.id_order, 
+                        orders.id_costumer, costumers.name_costumer, 
+                        orders.id_product, products.name_product, 
+                        orders.id_employee, employees.name_employee,
+                        orders.quantity_product
                   FROM  orders
-            INNER JOIN  users
-                    ON  users.id_user = orders.id_user
+            INNER JOIN  employees
+                    ON  employees.id_employee = orders.id_employee
             INNER JOIN  costumers
-                    ON  costumers.id_costumer = orders.id_order
+                    ON  costumers.id_costumer = orders.id_costumer
             INNER JOIN  products
                     ON  products.id_product = orders.id_product;
-            `)
+            `
+
+            const result = await client.execute(query, req.params.id)
 
             const response = {
                 message: 'List of all orders!',
@@ -63,8 +68,8 @@ module.exports = {
                             
                             Sales_order_number: ord.id_order,
                             seller:{
-                                id_user: ord.id_user,
-                                name_user: ord.name_user
+                                id_employee: ord.id_employee,
+                                name_emplyee: ord.name_employee
                             },
                             costumer: {
                                 id_costumer: ord.id_costumer,
@@ -94,27 +99,31 @@ module.exports = {
         try {
             const query = `
                 SELECT 
-                        orders.id_order, orders.id_user, users.name_user, orders.id_costumer,
+                        orders.id_order, orders.id_employee, employees.name_employee, orders.id_costumer,
                         costumers.name_costumer, products.name_product, orders.quantity_product
                   FROM  orders
-            INNER JOIN  users
-                    ON  users.id_user = orders.id_user
+            INNER JOIN  employees
+                    ON  employees.id_employee = orders.id_employee
             INNER JOIN  costumers
-                    ON  costumers.id_costumer = orders.id_order
+                    ON  costumers.id_costumer = orders.id_costumer
             INNER JOIN  products
                     ON  products.id_product = orders.id_product
-                 WHERE  orders.id_order = 2;
+                 WHERE  orders.id_order = ?;
             `
 
             const result = await client.execute(query, [req.params.id_order])
+
+            if(result.length < 1) {
+                return res.status(500).json({message: `Order id ${req.params.id_order}, not registered!`})
+            }
 
             const response = {
                 message: `Details order id: ${result[0].id_order}, of product!`,
                 order: {
                     Sales_order_number: result[0].id_order,
                     seller:{
-                        id_user: result[0].id_user,
-                        name_user: result[0].name_user,
+                        id_employee: result[0].id_employee,
+                        name_employee: result[0].name_employee,
                     },
                     costumer: {
                         id_costumer: result[0].id_costumer,
@@ -130,35 +139,41 @@ module.exports = {
                         url: process.env.URL_ORD + result[0].id_order
                     }
                 }
-        }
+            }
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: "Product not exist!"})
+            return res.status(500).json({error: error})
         }
     },
 
     async update(req, res) {
         try {
+            const query_very = `SELECT * FROM orders WHERE id_order = ?`
+                        
+            const result_very = await client.execute(query_very, [req.body.id_order]) 
+
+            if(result_very.length < 1) {
+                return res.status(500).json({message: 'Order id not registered!'})
+            }
+
             const query = `
-                    UPDATE orders 
-                       SET
-                        id_product = ?, id_user = ?, 
-                        id_costumer = ?, quantity_product = ?
-                     WHERE id_order = ?; 
+                    UPDATE  orders 
+                       SET  id_costumer = ?, id_product = ?, id_employee = ?, quantity_product = ?
+                     WHERE  id_order = ?; 
             `
 
             await client.execute(query, [
-                req.body.id_product, req.body.id_user, req.body.id_costumer,
+                req.body.id_costumer, req.body.id_product, req.body.id_employee,
                 req.body.quantity_product, req.body.id_order
             ])
 
             const response = {
-                message: 'Order updated successfully!',
+                message: `Order id ${req.body.id_order}, updated successfully!`,
                 updated_order: {
                     id_order: req.body.id_order,
-                    id_user: req.body.id_user,
                     id_costumer: req.body.id_costumer,
+                    id_employee: req.body.id_employee,
                     id_product: req.body.id_product,
                     quantity_product: req.body.quantity_product,
                     request: {
@@ -171,15 +186,23 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: "Order not created or incorrect data!"})
+            return res.status(500).json({error: error})
         }
     },
     
     async delete(req, res) {
         try {
+            const query_very = `SELECT * FROM orders WHERE id_order = ?`
+                        
+            const result_very = await client.execute(query_very, [req.body.id_order]) 
+
+            if(result_very.length < 1) {
+                return res.status(500).json({message: 'Order id not registered!'})
+            }
+
             const query = `DELETE FROM orders WHERE id_order = ?;`
 
-            await client.execute(query, [req.body.id_costumer])
+            await client.execute(query, [req.body.id_order])
 
             const response = {
                 message: `Order id: ${req.body.id_order},deleted successfully!`,
@@ -195,7 +218,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: "Order not found!"})
+            return res.status(500).json({error: error})
         }
     }
 }
