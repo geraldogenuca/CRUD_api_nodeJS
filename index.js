@@ -12,6 +12,7 @@ const express = require('express')
 , imagesRoutes = require('./src/routes/images.routes')
 , employeesRoutes = require('./src/routes/employees.routes')
 , costumersRoutes = require('./src/routes/costumers.routes')
+, addressRoutes = require('./src/routes/address.routes')
 
 
 app.use('/public', express.static('public'))
@@ -26,6 +27,7 @@ app.use('/orders', ordersRoutes)
 app.use('/images', imagesRoutes)
 app.use('/employees', employeesRoutes)
 app.use('/costumers', costumersRoutes)
+app.use('/', addressRoutes)
 
 
 app.listen(port, () => {

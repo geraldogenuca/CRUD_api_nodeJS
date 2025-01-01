@@ -8,7 +8,7 @@ module.exports = {
             const query = `
                     INSERT INTO 
                         costumers
-                            (name_costumer, email_costumer, cpf_costumer, phone_costumer) 
+                            (name_costumer, cpf_costumer, email_costumer, ) 
                         VALUES
                             (?, ?, ?, ?);
             `

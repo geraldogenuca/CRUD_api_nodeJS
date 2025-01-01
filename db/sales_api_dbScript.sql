@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2025-01-01 10:20
+-- Generated: 2025-01-01 15:01
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -17,61 +17,47 @@ CREATE TABLE IF NOT EXISTS `sales_api`.`costumers` (
   `cpf_costumer` VARCHAR(11) NOT NULL,
   `email_costumer` VARCHAR(80) NOT NULL,
   `password_costumer` VARCHAR(200) NOT NULL,
-  `id_street` INT(11) NOT NULL,
   `phone_1` VARCHAR(45) NOT NULL,
   `phone_2` VARCHAR(45) NULL DEFAULT NULL,
+  `id_address` INT(11) NOT NULL,
+  `number_residence` SMALLINT(5) NULL DEFAULT NULL,
+  `complement` VARCHAR(45) NULL DEFAULT NULL,
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_costumer`),
   UNIQUE INDEX `email_costumer_UNIQUE` (`email_costumer` ASC) VISIBLE,
-  INDEX `fk_costumers_streets1_idx` (`id_street` ASC) VISIBLE,
-  CONSTRAINT `fk_costumers_streets1`
-    FOREIGN KEY (`id_street`)
-    REFERENCES `sales_api`.`addresses` (`id_address`)
+  INDEX `fk_costumers_addresses1_idx` (`id_address` ASC) VISIBLE,
+  CONSTRAINT `fk_costumers_addresses1`
+    FOREIGN KEY (`id_address`)
+    REFERENCES `sales_api`.`address` (`id_address`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `sales_api`.`cities` (
-  `id_city` INT(11) NOT NULL AUTO_INCREMENT,
-  `id_country` INT(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sales_api`.`location` (
+  `id_location` INT(11) NOT NULL AUTO_INCREMENT,
   `name_city` VARCHAR(100) NOT NULL,
-  `state_initials` VARCHAR(10) NULL DEFAULT NULL,
-  PRIMARY KEY (`id_city`),
-  INDEX `fk_cities_countries_idx` (`id_country` ASC) VISIBLE,
-  CONSTRAINT `fk_cities_countries`
-    FOREIGN KEY (`id_country`)
-    REFERENCES `sales_api`.`countries` (`id_country`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `state_initials` VARCHAR(10) NOT NULL,
+  `country` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id_location`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `sales_api`.`addresses` (
+CREATE TABLE IF NOT EXISTS `sales_api`.`address` (
   `id_address` INT(11) NOT NULL AUTO_INCREMENT,
-  `id_city` INT(11) NOT NULL,
+  `id_location` INT(11) NOT NULL,
   `name_street` VARCHAR(100) NOT NULL,
   `postal_code` VARCHAR(8) NOT NULL,
-  `n_residence` SMALLINT(5) NOT NULL,
-  `complement` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id_address`),
-  INDEX `fk_streets_cities1_idx` (`id_city` ASC) VISIBLE,
-  CONSTRAINT `fk_streets_cities1`
-    FOREIGN KEY (`id_city`)
-    REFERENCES `sales_api`.`cities` (`id_city`)
+  INDEX `fk_addresses_location1_idx` (`id_location` ASC) VISIBLE,
+  CONSTRAINT `fk_addresses_location1`
+    FOREIGN KEY (`id_location`)
+    REFERENCES `sales_api`.`location` (`id_location`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS `sales_api`.`countries` (
-  `id_country` INT(11) NOT NULL AUTO_INCREMENT,
-  `name_country` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`id_country`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
