@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2024-12-30 14:11
+-- Generated: 2024-12-31 20:30
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -35,7 +35,7 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `sales_api`.`cities` (
-  `id_city` INT(11) NOT NULL,
+  `id_city` INT(11) NOT NULL AUTO_INCREMENT,
   `id_country` INT(11) NOT NULL,
   `name_city` VARCHAR(100) NOT NULL,
   `state_initials` VARCHAR(10) NULL DEFAULT NULL,
@@ -79,20 +79,13 @@ COLLATE = utf8_unicode_ci;
 CREATE TABLE IF NOT EXISTS `sales_api`.`products` (
   `id_product` INT(11) NOT NULL AUTO_INCREMENT,
   `id_category` INT(11) NOT NULL,
-  `id_img` INT(11) NOT NULL,
   `name_product` VARCHAR(150) NOT NULL,
   `price_product` FLOAT(5,2) NOT NULL,
   `description_product` VARCHAR(45) NULL DEFAULT NULL,
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_product`),
-  INDEX `fk_products_img_products1_idx` (`id_img` ASC) VISIBLE,
   INDEX `fk_products_categories1_idx` (`id_category` ASC) VISIBLE,
-  CONSTRAINT `fk_products_img_products1`
-    FOREIGN KEY (`id_img`)
-    REFERENCES `sales_api`.`img_products` (`id_img`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_products_categories1`
     FOREIGN KEY (`id_category`)
     REFERENCES `sales_api`.`categories` (`id_category`)
@@ -111,9 +104,16 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `sales_api`.`img_products` (
-  `id_img` INT(11) NOT NULL,
+  `id_img` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_product` INT(11) NOT NULL,
   `path_img` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`id_img`))
+  PRIMARY KEY (`id_img`),
+  INDEX `fk_img_products_products1_idx` (`id_product` ASC) VISIBLE,
+  CONSTRAINT `fk_img_products_products1`
+    FOREIGN KEY (`id_product`)
+    REFERENCES `sales_api`.`products` (`id_product`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;

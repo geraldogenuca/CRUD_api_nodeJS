@@ -4,17 +4,17 @@ const client = require('../config/mysql')
 module.exports = {    
     async upload(req, res) {
         try {
-            const query = `INSERT INTO images (id_product, image_path) VALUE (?, ?);`
+            const query = `INSERT INTO img_products (id_img, path_img) VALUE (?, ?);`
 
-            const result = await client.execute(query, [req.body.id_product, req.file.path])
+            const result = await client.execute(query, [req.body.id_img, req.file.path])
 
             const response = {
                 
                 message: 'Image inserted successfully!',
                 created_image: {
-                    id_image: result.insertId,
+                    id_img: result.insertId,
                     id_product: req.body.id_product,
-                    image_path: `${req.file.path}`.replace('\\', '/').replace('\\', '/'),
+                    path_img: `${req.file.path}`.replace('\\', '/').replace('\\', '/'),
                     request: {
                         type: 'POST',
                         description: 'Insert image!',

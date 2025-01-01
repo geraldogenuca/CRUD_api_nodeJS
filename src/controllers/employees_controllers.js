@@ -62,7 +62,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.email_employee])
     
             if (result_very.length < 1) {
-                return res.status(401).send({message: 'Authenthication failed!'})
+                return res.status(401).send({message: 'Authenthication failed1!'})
             }
     
             if (await bcrypt.compareSync(req.body.password_employee, result_very[0].password_employee)) {
@@ -79,7 +79,7 @@ module.exports = {
                     token: token
                 })
             }
-            return res.status(401).send({message: 'Authenthication failed!'})
+            return res.status(401).send({message: 'Authenthication failed2!'})
     
         } catch (error) {
             return res.status(500).send({message: error})
@@ -164,7 +164,7 @@ module.exports = {
             const query = `
                      UPDATE employees 
                         SET name_employee = ?, email_employee = ?, cpf_employee = ?, 
-                            phone_employee = ?, function_employee =?
+                            phone_employee = ?, function_employee = ?
                       WHERE id_employee = ?
             `
 

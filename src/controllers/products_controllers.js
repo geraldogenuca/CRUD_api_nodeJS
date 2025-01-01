@@ -4,6 +4,24 @@ const client = require('../config/mysql')
 module.exports = {    
     async create(req, res) {
         try {
+            const query_very = `SELECT * FROM categories WHERE id_category = ?;`
+
+            const result_very = await client.execute(query_very, [req.body.id_category])
+
+            if(result_very.length < 1){
+
+                return res.status(500).json({error: 'Category not exist!'})
+            }      
+
+            const query_very2 = `SELECT * FROM products WHERE name_product = ?;`
+
+            const result_very2 = await client.execute(query_very2, [req.body.name_product])
+
+            if(result_very2.length > 0){
+
+                return res.status(500).json({error: 'Product name already registered!'})
+            }      
+            
             const query = `
                     INSERT INTO 
                         products 
@@ -100,15 +118,23 @@ module.exports = {
 
     async update(req, res) {
         try {
+            /*const query_very = `SELECT * FROM products WHERE id_product = ?`
+            
+            const result_very = await client.execute(query_very, [req.body.id_product]) 
+
+            if(result_very.length < 1) {
+                return res.status(500).json({message: 'Product id not registered!'})
+            }*/
+            
             const query = `
-                    UPDATE products SET id_category = ?, name_product = ?, price_product =?, description_product = ?
-                     WHERE id_product = ?
+                UPDATE  products 
+                   SET  id_category = ?, name_product = ?, price_product = ?, description_product = ?
+                 WHERE  id_product = ?
             `
 
             await client.execute(query, [
-                req.body.id_category, req.body.name_product,
-                req.body.price_product, req.body.description_product,
-                req.body.id_product
+                req.body.id_category, req.body.name_product, req.body.price_product, 
+                req.body.description_product, req.body.id_product
             ])
 
             const response = {
@@ -135,6 +161,14 @@ module.exports = {
     
     async delete(req, res) {
         try {
+            const query_very = `SELECT * FROM products WHERE id_product = ?`
+            
+            const result_very = await client.execute(query_very, [req.body.id_product]) 
+
+            if(result_very.length < 1) {
+                return res.status(500).json({message: 'Product id not registered!'})
+            }
+
             const query = `DELETE FROM products WHERE id_product = ?;`
 
             await client.execute(query, [req.body.id_product])
