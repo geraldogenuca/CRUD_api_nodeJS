@@ -80,7 +80,7 @@ module.exports = {
                 image: {
                     id_image: result[0].id_image,
                     id_product: result[0].id_product,
-                    path_image: process.env.URL_SERVER + `${result[0].path_image}`.replace('\\', '/').replace('\\', '/'),
+                    path_image: `${result[0].path_image}`.replace('\\', '/').replace('\\', '/'),
                     request: {
                         type: 'GET',
                         description: 'Return details of image!',

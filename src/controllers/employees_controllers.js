@@ -134,8 +134,8 @@ module.exports = {
                     name_employee: result[0].name_employee,
                     email_employee: result[0].email_employee,
                     cpf_employee: result[0].cpf_employee,
-                    phone_employee: result[0].cpf_employee,
-                    function_employee: result[0].cpf_employee,
+                    phone_employee: result[0].phone_employee,
+                    function_employee: result[0].function_employee,
                     request: {
                         type: 'GET',
                         description: 'Return details of employee!',

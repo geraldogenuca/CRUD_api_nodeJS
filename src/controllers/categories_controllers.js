@@ -32,7 +32,7 @@ module.exports = {
 
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: "Category not created!"})
+            return res.status(500).json({error: error})
         }
     },    
     

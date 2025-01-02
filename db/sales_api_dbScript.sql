@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2025-01-01 15:01
+-- Generated: 2025-01-02 11:12
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -13,15 +13,15 @@ CREATE SCHEMA IF NOT EXISTS `sales_api` DEFAULT CHARACTER SET utf8 COLLATE utf8_
 
 CREATE TABLE IF NOT EXISTS `sales_api`.`costumers` (
   `id_costumer` INT(11) NOT NULL AUTO_INCREMENT,
-  `name_costumer` VARCHAR(150) NULL DEFAULT NULL,
-  `cpf_costumer` VARCHAR(11) NOT NULL,
+  `name_costumer` VARCHAR(150) NULL DEFAULT 'client-anon',
+  `cpf_costumer` VARCHAR(11) NULL DEFAULT '00000000000',
   `email_costumer` VARCHAR(80) NOT NULL,
   `password_costumer` VARCHAR(200) NOT NULL,
-  `phone_1` VARCHAR(45) NOT NULL,
-  `phone_2` VARCHAR(45) NULL DEFAULT NULL,
-  `id_address` INT(11) NOT NULL,
-  `number_residence` SMALLINT(5) NULL DEFAULT NULL,
-  `complement` VARCHAR(45) NULL DEFAULT NULL,
+  `phone_1` VARCHAR(15) NULL DEFAULT '+00000000000000',
+  `phone_2` VARCHAR(15) NULL DEFAULT '+00000000000000',
+  `id_address` INT(11) NULL DEFAULT 00000,
+  `number_residence` SMALLINT(6) NULL DEFAULT 00000,
+  `complement` VARCHAR(45) NULL DEFAULT 'BL- Null Ap-Null',
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_costumer`),
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `sales_api`.`address` (
   `id_address` INT(11) NOT NULL AUTO_INCREMENT,
   `id_location` INT(11) NOT NULL,
   `name_street` VARCHAR(100) NOT NULL,
-  `postal_code` VARCHAR(8) NOT NULL,
+  `postal_code` VARCHAR(9) NULL DEFAULT '00000-000',
   PRIMARY KEY (`id_address`),
   INDEX `fk_addresses_location1_idx` (`id_location` ASC) VISIBLE,
   CONSTRAINT `fk_addresses_location1`
@@ -67,11 +67,12 @@ CREATE TABLE IF NOT EXISTS `sales_api`.`products` (
   `id_category` INT(11) NOT NULL,
   `name_product` VARCHAR(150) NOT NULL,
   `price_product` FLOAT(5,2) NOT NULL,
-  `description_product` VARCHAR(45) NULL DEFAULT NULL,
+  `description_product` VARCHAR(255) NULL DEFAULT 'Descrição Produto Opicional',
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_product`),
   INDEX `fk_products_categories1_idx` (`id_category` ASC) VISIBLE,
+  UNIQUE INDEX `name_product_UNIQUE` (`name_product` ASC) VISIBLE,
   CONSTRAINT `fk_products_categories1`
     FOREIGN KEY (`id_category`)
     REFERENCES `sales_api`.`categories` (`id_category`)
@@ -106,10 +107,10 @@ COLLATE = utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `sales_api`.`orders` (
   `id_order` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_employee` INT(11) NOT NULL,
   `id_costumer` INT(11) NOT NULL,
   `id_product` INT(11) NOT NULL,
-  `id_employee` INT(11) NOT NULL,
-  `quantity_product` VARCHAR(45) NOT NULL,
+  `quantity_product` SMALLINT(6) NOT NULL,
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_order`),
@@ -138,11 +139,11 @@ COLLATE = utf8_unicode_ci;
 CREATE TABLE IF NOT EXISTS `sales_api`.`employees` (
   `id_employee` INT(11) NOT NULL AUTO_INCREMENT,
   `name_employee` VARCHAR(150) NOT NULL,
-  `email_employee` VARCHAR(80) NULL DEFAULT NULL,
+  `email_employee` VARCHAR(80) NULL DEFAULT 'mail@mail',
   `cpf_employee` VARCHAR(11) NOT NULL,
-  `password_employee` VARCHAR(255) NOT NULL,
-  `phone_employee` VARCHAR(11) NULL DEFAULT NULL,
-  `function_employee` VARCHAR(100) NULL DEFAULT NULL,
+  `password_employee` VARCHAR(200) NOT NULL,
+  `phone_employee` VARCHAR(15) NULL DEFAULT '+00000000000000',
+  `function_employee` VARCHAR(100) NULL DEFAULT 'Equipe-Empresa',
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_employee`),
