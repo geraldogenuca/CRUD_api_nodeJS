@@ -4,7 +4,7 @@ WORKDIR /src/api_sales
 
 COPY package.json ./package.json
 COPY package-lock.json ./package-lock.json
-COPY .env ./.env
+#COPY .env ./.env
 
 RUN npm install
 
