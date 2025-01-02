@@ -11,7 +11,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.cpf_employee]) 
 
             if(result_very.length == 1) {
-                return res.status(500).json({message: 'Invalid or already registered CPF!'})
+                return res.status(404).json({message: 'Invalid or already registered CPF!'})
             }
 
             const query = `
@@ -51,7 +51,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(400).json({error: error})
+            return res.status(500).json({error: error})
         }
     },
 
@@ -157,7 +157,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_employee]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Employee id not registered!'})
+                return res.status(404).json({message: 'Employee id not registered!'})
             }
 
             const query = `
@@ -189,7 +189,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response)
+            return res.status(202).json(response)
         } catch (error) {
             return res.status(500).json({error: error})
         }
@@ -202,7 +202,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_employee]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Employee id not registered!'})
+                return res.status(404).json({message: 'Employee id not registered!'})
             }
 
             const query = `DELETE FROM employees WHERE id_employee = ?;`
@@ -221,7 +221,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response)
+            return res.status(202).json(response)
         } catch (error) {
             return res.status(500).json({error: error})
         }

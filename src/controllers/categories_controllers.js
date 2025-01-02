@@ -10,7 +10,7 @@ module.exports = {
 
             if(result_very.length > 0){
 
-                return res.status(500).json({error: 'Category exist!'})
+                return res.status(401).json({error: 'Category exist!'})
             }      
             
             const query = `INSERT INTO categories (name_category) VALUE (?);`
@@ -96,7 +96,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_category]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Category not deleted or does not exist!'})
+                return res.status(404).json({message: 'Category not deleted or does not exist!'})
             }
 
             const query = `DELETE FROM categories WHERE id_category = ?;`

@@ -10,7 +10,7 @@ module.exports = {
 
             if(result_very.length < 1){
 
-                return res.status(500).json({error: 'Category not exist!'})
+                return res.status(404).json({error: 'Category not exist!'})
             }      
 
             const query_very2 = `SELECT * FROM products WHERE name_product = ?;`
@@ -19,7 +19,7 @@ module.exports = {
 
             if(result_very2.length > 0){
 
-                return res.status(500).json({error: 'Product name already registered!'})
+                return res.status(404).json({error: 'Product name already registered!'})
             }      
             
             const query = `
@@ -123,7 +123,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_product]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Product id not registered!'})
+                return res.status(404).json({message: 'Product id not registered!'})
             }*/
             
             const query = `
@@ -153,7 +153,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response)
+            return res.status(202).json(response)
         } catch (error) {
             return res.status(500).json({error: "Product not created or incorrect data!"})
         }
@@ -166,7 +166,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_product]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Product id not registered!'})
+                return res.status(404).json({message: 'Product id not registered!'})
             }
 
             const query = `DELETE FROM products WHERE id_product = ?;`
@@ -185,7 +185,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response) 
+            return res.status(202).json(response) 
         } catch (error) {
             return res.status(500).json({error: "Product not created or does not exist!"})
         }

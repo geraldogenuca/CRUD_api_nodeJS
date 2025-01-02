@@ -9,7 +9,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.email_costumer]) 
 
             if(result_very.length == 1) {
-                return res.status(500).json({message: 'Invalid or already registered EMAIL!'})
+                return res.status(404).json({message: 'Invalid or already registered EMAIL!'})
             }
 
             const query = `
@@ -48,7 +48,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: "Costumer not created!"})
+            return res.status(500).json({error: error})
         }
     },
 
@@ -86,7 +86,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: 'Costumers not found!'})
+            return res.status(500).json({error: error})
         }
     },
 
@@ -120,7 +120,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: 'Costumer not found!'})
+            return res.status(500).json({error: error})
         }
     },    
 
@@ -131,7 +131,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_costumer]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Costumer id not registered!'})
+                return res.status(404).json({message: 'Costumer id not registered!'})
             }
 
             const query = `
@@ -172,7 +172,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response)
+            return res.status(202).json(response)
         } catch (error) {
             return res.status(500).json({error: error})
         }
@@ -185,7 +185,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_costumer]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Costumer id not registered!'})
+                return res.status(404).json({message: 'Costumer id not registered!'})
             }
 
             const query = `DELETE FROM costumers WHERE id_costumer = ?;`
@@ -204,9 +204,9 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response)
+            return res.status(202).json(response)
         } catch (error) {
-            return res.status(500).json({error: "Costumer not found!"})
+            return res.status(500).json({error: error})
         }
     }
 }

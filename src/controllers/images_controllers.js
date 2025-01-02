@@ -9,7 +9,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_product]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Product id not registered!'})
+                return res.status(404).json({message: 'Product id not registered!'})
             }            
 
             const query = 'INSERT INTO images_products (id_product, path_image) VALUES (?, ?)';
@@ -72,7 +72,7 @@ module.exports = {
             const result = await client.execute(query, [req.params.id_image])
 
             if(result < 1) {
-                return res.status(401).json({message: 'Image id not registered!'})
+                return res.status(404).json({message: 'Image id not registered!'})
             }
 
             const response = {
@@ -137,7 +137,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_image]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Image id not registered!'})
+                return res.status(401).json({message: 'Image id not registered!'})
             }
 
             const query = `DELETE FROM images_products WHERE id_image = ?;`
@@ -156,7 +156,7 @@ module.exports = {
                 }
             }
     
-            return res.status(201).json(response)
+            return res.status(202).json(response)
         } catch (error) {
             return res.status(500).json({error: error})
         }

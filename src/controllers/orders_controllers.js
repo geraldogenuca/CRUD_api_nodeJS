@@ -114,7 +114,7 @@ module.exports = {
             const result = await client.execute(query, [req.params.id_order])
 
             if(result.length < 1) {
-                return res.status(500).json({message: `Order id ${req.params.id_order}, not registered!`})
+                return res.status(404).json({message: `Order id ${req.params.id_order}, not registered!`})
             }
 
             const response = {
@@ -154,7 +154,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_order]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Order id not registered!'})
+                return res.status(404).json({message: 'Order id not registered!'})
             }
 
             const query = `
@@ -184,7 +184,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response)
+            return res.status(202).json(response)
         } catch (error) {
             return res.status(500).json({error: error})
         }
@@ -197,7 +197,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_order]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Order id not registered!'})
+                return res.status(404).json({message: 'Order id not registered!'})
             }
 
             const query = `DELETE FROM orders WHERE id_order = ?;`
@@ -216,7 +216,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response)
+            return res.status(202).json(response)
         } catch (error) {
             return res.status(500).json({error: error})
         }

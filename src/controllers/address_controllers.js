@@ -10,7 +10,7 @@ module.exports = {
 
             if(result_very.length == 1){
 
-                return res.status(500).json({error: 'Location name already registered!'})
+                return res.status(404).json({error: 'Location name already registered!'})
             }      
                         
             const query = `
@@ -70,7 +70,7 @@ module.exports = {
     
             return res.status(200).json(response)
         } catch (error) {
-            return res.status(500).json({error: 'Costumers not found!'})
+            return res.status(500).json({error: error})
         }
     },
 
@@ -81,7 +81,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_location]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Location id not registered!'})
+                return res.status(404).json({message: 'Location id not registered!'})
             }
 
             const query = `DELETE FROM location WHERE id_location = ?;`
@@ -100,7 +100,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response) 
+            return res.status(202).json(response) 
         } catch (error) {
             return res.status(500).json({error: error})
         }                
@@ -114,7 +114,7 @@ module.exports = {
 
             if(result_very.length == 1){
 
-                return res.status(500).json({error: 'Street name already registered!'})
+                return res.status(404).json({error: 'Street name already registered!'})
             }      
                         
             const query = `
@@ -185,7 +185,7 @@ module.exports = {
             const result_very = await client.execute(query_very, [req.body.id_address]) 
 
             if(result_very.length < 1) {
-                return res.status(500).json({message: 'Address id not registered!'})
+                return res.status(404).json({message: 'Address id not registered!'})
             }
 
             const query = `DELETE FROM address WHERE id_address = ?;`
@@ -204,7 +204,7 @@ module.exports = {
                 }
             }
     
-            return res.status(200).json(response) 
+            return res.status(202).json(response) 
         } catch (error) {
             return res.status(500).json({error: error})
         }                
