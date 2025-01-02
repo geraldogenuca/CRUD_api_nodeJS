@@ -70,7 +70,7 @@ module.exports = {
                             id_product: prod.id_product,
                             id_category: prod.id_category,
                             name_product: prod.name_product,
-                            price_pruduct: prod.price_name,
+                            price_pruduct: prod.price_product,
                             description_product: prod.description,
                             request: {
                                 type: 'GET',

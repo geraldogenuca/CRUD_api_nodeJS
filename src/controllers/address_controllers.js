@@ -89,7 +89,7 @@ module.exports = {
             await client.execute(query, [req.body.id_location])
 
             const response = {
-                message: `Location id: ${rq.body.id_location}, deleted successfully!`,
+                message: `Location id: ${req.body.id_location}, deleted successfully!`,
                 deleted_product: {
                     id_product: req.body.id_location,
                     request: {

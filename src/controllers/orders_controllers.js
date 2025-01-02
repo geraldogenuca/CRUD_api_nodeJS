@@ -7,7 +7,7 @@ module.exports = {
             const query = `
                     INSERT INTO 
                         orders 
-                            (id_costumer, id_product, id_employee, quantity_product) 
+                            (id_costumer, id_employee, id_product, quantity_product) 
                         VALUES
                             (?, ?, ?, ?);
             `
@@ -21,8 +21,8 @@ module.exports = {
                 message: `Order id: ${result.insertId}, inserted successfully!`,
                 created_order: {
                     id_order: result.insertId,
-                    id_user: req.body.id_user,
                     id_costumer: req.body.id_costumer,
+                    id_employee: req.body.id_employee,
                     id_product: req.body.id_product,
                     quantity_product: req.body.quantity_product,
                     request: {
@@ -35,7 +35,7 @@ module.exports = {
     
             return res.status(201).json(response)
         } catch (error) {
-            return res.status(500).json({error: "Order not created!"})
+            return res.status(500).json({error: error})
         }
     },
     
